@@ -111,3 +111,21 @@ SyntaxError : el código no se puede analizar correctamente
 TypeError : se llama a una función en un valor de un tipo inapropiado;
 ValueError : se llama a una función en un valor del tipo correcto, pero con un valor inapropiado
 '''
+
+
+#####     Time
+
+import  time
+inicio=time.perf_counter()
+def fibonacci(n):
+    if n==int:
+        return n
+    if n== 0 or n==1:
+        return n
+    else:
+        return fibonacci(n-1)+fibonacci(n-2)
+fin=time.perf_counter()
+(print(fin - inicio))
+print=fibonacci(54)
+
+
