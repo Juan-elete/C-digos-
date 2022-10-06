@@ -1,0 +1,113 @@
+'''
+Búsqueda Binaria
+
+Cuando la respuesta se encuentra en un conjunto ordenado, podemos utilizar búsqueda binaria.
+Es altamente eficiente, pues corta el espacio de búsqueda en dos por cada iteración. Los pasos que sigue son:
+
+Consideramos como segmento inicial de búsqueda a la lista completa.
+Analizamos el punto medio del segmento (el valor central), si es el valor buscado, devolvemos el índice del punto medio.
+Si el valor central es mayor al buscado, podemos descartar el segmento que está desde el punto medio hacia la a derecha.
+Si el valor central es menor al buscado, podemos descartar el segmento que está desde el punto medio hacia la izquierda.
+Una vez descartado el segmento que no nos interesa, volvemos a analizar el segmento restante, de la misma forma.
+Si en algún momento el segmento a analizar tiene longitud 0 o negativa significa que el valor buscado no se encuentra en la lista.
+'''
+
+objetivo = int(input("Escoga un número: "))
+epsilon = 0.01      # margen de error para encontrar esa raiz cuadrada
+bajo = 0.0          # valor minimo para calcular largo del conjunto
+alto = max(1.0, objetivo)   #(max)Nos regresa el valor más alto entre dos valores
+respuesta = (alto + bajo) / 2       # aqui generamos el valor medio de nuestro conjunto, a lo cual se puede genera el condicional (if) para elegir la mitad menor o la mitad mayor.
+
+# para entender esto, lo más fácil es imaginar que el while saltará de un grupo de mitades a otro, dependiendo de la situación, hasta que el grupo se divida lo suficiente como para dar con el objetivo.
+
+# el while comienza diciendo que, hasta que la respuesta de con el resultado (con un margen de error de 0.01, es decir epsilon), se hará la iteración del paso 2 de este algoritmo.
+while abs(respuesta**2 - objetivo) >= epsilon:
+    # si respuesta**2 no es mayor que objetivo, quiere decir que respuesta debe ser mayor (de respuesta para abajo, no nos sirve; nos sirve el rango de respuesta para arriba).
+    # RECORDAR: respuesta es el valor medio del conjunto que estamos analizando (mirar más arriba)
+    if respuesta**2 < objetivo:
+        # como sabemos que de respuesta para abajo no tenemos un valor que nos sirva, actualizamos el piso (bajo) de nuestro conjunto a el valor actual de respuesta.
+        bajo = respuesta
+    # si respuesta**2 es mayor que objetivo, quiere decir que respuesta debe ser menor (de respuesta para arriba, no nos sirve; nos sirve el rango de respuesta para abajo)
+    else:
+        # como sabemos que respuesta para arriba no tenemos un valor que nos sirva, actualizamos el techo (alto) de nuestro conjunto a el valor actual de respuesta
+        alto = respuesta
+
+    # Saliendo del else, ejecutamos el código para que respuesta (punto medio de nuestro conjunto) se actualice al nuevo conjunto.
+    respuesta = (alto + bajo) / 2
+
+##################################
+# Repitiendo este loop, llegará un punto en el que el conjunto sea muy pequeño, y hallaremos la raiz cuadrada.
+# Los loops necesarios serán mucho menos que si usamos busqueda exhaustiva o aproximacion
+
+print(f'La raiz cuadrada de {objetivo} es {respuesta}')
+
+
+
+####        RECURSIVIDAD
+
+def fib(n):
+    if n < 2:
+        return n
+    else:
+        return fib(n-1) + fib(n -2)     #
+
+fibonacci = fib(8)
+print(fibonacci)
+
+####        CAJA NEGRA
+
+import unittest
+
+def suma(num1, num2):
+    # Si hacemos un cambio en el return donde queremos obtener el numero absoluto abs(num1) esto provocara un error en el test para
+    #sumar negativos, al hacer un cambio y tener casos de prueba para validar el funcionamiento correcto esto provoca que lo solucionemos
+    #inmediatamente conjunto a prever el desconocimiento de donde ocurre o ocurra este error
+    return num1 + num2
+
+# Esta creacion del objeto crea automaticamente los testeo dentro del modulo de python
+class CajaNegraTest(unittest.TestCase):
+    # Las pruebas desde funciones
+    def test_suma_dos_positivos(self):
+        num_1 = 10
+        num_2 = 5
+
+        resultado = suma(num_1, num_2)
+
+        # Esto funciona asi:
+        # (valor, valorQuerido) = valor == valorQuerido (Nos devuelve un true o false)
+        self.assertEqual(resultado, 15)
+        # Esto funciona asi:
+        #  (valor, valorQuerido) = valor > valorQuerido (Nos devuelve un true o false)
+        self.assertGreater(resultado, 14)
+        # Esto funciona asi:
+        #  (valor, valorQuerido) = valor >= valorQuerido (Nos devuelve un true o false)
+        self.assertGreaterEqual(resultado, 15)
+        # Esto funciona asi:
+        #  (valor, valorQuerido) = valor < valorQuerido (Nos devuelve un true o false)
+        self.assertLess(resultado, 16)
+        # Esto funciona asi:
+        #  (valor, valorQuerido) = valor <= valorQuerido (Nos devuelve un true o false)
+        self.assertLessEqual(resultado, 15)
+
+    def test_suma_dos_negativos(self):
+        num_1 = -10
+        num_2 = -7
+
+        resultado = suma(num_1, num_2)
+
+        self.assertEqual(resultado, -17)
+
+if __name__ == '__main__':
+    unittest.main()
+
+
+####    EXCEPSIÓN
+'''
+Excepciones comunes:
+ImportError : una importación falla;
+IndexError : una lista se indexa con un número fuera de rango;
+NameError : se usa una variable desconocida ;
+SyntaxError : el código no se puede analizar correctamente
+TypeError : se llama a una función en un valor de un tipo inapropiado;
+ValueError : se llama a una función en un valor del tipo correcto, pero con un valor inapropiado
+'''
